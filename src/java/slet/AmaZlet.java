@@ -68,17 +68,27 @@ String fWord=request.getParameter("fWord");
 String sCurr=request.getParameter("sCurr");
 String sPage=request.getParameter("page");
 int startPage=convertToTen(sPage,13);
-int firstItemIdx=((startPage-1)*13)%10;
+
 if(sCurr==null) sCurr="EUR";
 if(fWord!=null){
     fWord=fWord.trim();
     if(fWord.length()>0){
         FindIs mil=new FindIs(fWord,startPage,startPage+1);
         FoundItems fiTems=mil.process();
+        //add product list
         request.setAttribute("stuff", fiTems);
+        //TODO - calculate needed pages
+       
+        //request.setAttribute("cPages", cPages);
+        //calculate current page firstElement
+        int firstItemIdx=((startPage-1)*13)%10;
+        request.setAttribute("firstItemIdx",firstItemIdx);
+        
     }
 }
 Params fD = new Params();
+fD.setcUnit(sCurr);
+fD.setfWord(fWord);
 request.setAttribute("saadetis", fD);
 
 request.getRequestDispatcher("first.jsp").forward(request, response);

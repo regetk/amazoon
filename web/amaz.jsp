@@ -199,9 +199,9 @@
     return tstmp.getTime();
 } 
 </script>
-<input type="hidden" id="choosenCurr" value="${saadetis.mingiList.get(0).pk}" />
+<input type="hidden" id="choosenCurr" value="${saadetis.cUnit}" />
 <form method="GET">
-    <input type="text" name="fWord" value="${saadetis.nimi}" />
+    <input type="text" name="fWord" value="${saadetis.fWord}" />
     <select id="selCurr" name="sCurr"></select>
     <input type="submit" value="Find" />
 </form>
