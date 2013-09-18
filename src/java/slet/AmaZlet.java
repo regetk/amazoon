@@ -66,17 +66,21 @@ public class AmaZlet extends HttpServlet {
  private void showPage(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 String fWord=request.getParameter("fWord");
 String sCurr=request.getParameter("sCurr");
+String sPage=request.getParameter("page");
+int startPage=convertToTen(sPage,13);
+int firstItemIdx=((startPage-1)*13)%10;
 if(sCurr==null) sCurr="EUR";
-
-Proov fD = new Proov();
-pLaps p1=new pLaps();
-p1.setKk(10);
-pLaps p2=new pLaps();
-p2.setPk(sCurr);
-fD.setNimi(fWord);
-fD.getMingiList().add(p2);
-fD.getMingiList().add(p1);
+if(fWord!=null){
+    fWord=fWord.trim();
+    if(fWord.length()>0){
+        FindIs mil=new FindIs(fWord,startPage,startPage+1);
+        FoundItems fiTems=mil.process();
+        request.setAttribute("stuff", fiTems);
+    }
+}
+Params fD = new Params();
 request.setAttribute("saadetis", fD);
+
 request.getRequestDispatcher("first.jsp").forward(request, response);
     }   
     
@@ -104,4 +108,23 @@ request.getRequestDispatcher("first.jsp").forward(request, response);
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    /**
+     * 
+     * @param sPage - choosen page nr
+     * @param i - items in one page
+     * @return  -first needed page number in WS query
+     */
+    private int convertToTen(String sPage, int i) {
+        if(sPage==null) return 1;
+        try{
+        int pNr=Integer.parseInt(sPage);
+        pNr=(i*pNr)/10;
+        return pNr;
+        }
+        catch(Exception ex){
+        return 1;
+        }
+             
+    }
 }

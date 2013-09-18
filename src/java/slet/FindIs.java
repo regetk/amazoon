@@ -103,8 +103,13 @@ public class FindIs {
         
 
     }
+   
+   /**
+    * Joins found pages to one XML and unmarshals it to FoundItems collection 
+    * @return FoundItems collection
+    */
 
-    public FoundItems process(String fWord, int firstPage, int lastPage) {
+    public FoundItems process() {
 
         System.out.println("processs ");
         FoundItems fis = new FoundItems();
@@ -112,15 +117,15 @@ public class FindIs {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             ArrayList<Node> allNodes = new ArrayList<Node>();
-            //AWS gives only pages 1-5
-            if (lastPage > 5 || lastPage < 1) {
-                lastPage = 5;
+            //AWS  gives only pages 1-5
+            if (this.ePage > 5 || this.ePage < 1) {
+                this.ePage = 5;
             }
-            if (firstPage > 5 || firstPage < 1) {
-                firstPage = 1;
+            if (this.fPage > 5 || this.fPage < 1) {
+                this.fPage = 1;
             }
-            for (int a = firstPage; a <= lastPage; a++) {
-                String rUrl = makeUrl(a, fWord);
+            for (int a = this.fPage; a <= this.ePage; a++) {
+                String rUrl = makeUrl(a, this.fWord);
                 System.out.println(rUrl);
                 Document doc = db.parse(rUrl);
                 //Find Items section

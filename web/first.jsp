@@ -9,5 +9,6 @@
     <body>
         <h1>Otsi Amazonist</h1>
         <jsp:include page="amaz.jsp" />
+        <jsp:include page="./WEB-INF/jspf/products.jsp" />
     </body>
 </html>
