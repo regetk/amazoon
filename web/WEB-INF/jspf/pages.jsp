@@ -8,6 +8,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <ul >
 <c:forEach var="page" begin="1" end="${cPages}" step="1">
-    <li style="display: inline;"><a href="?page=${page}&fWord=${saadetis.fWord}&sCurr=${saadetis.cUnit}">${page}</a></li>
+    <li style="display: inline;"><a class="pageLink" href="?page=${page}&fWord=${saadetis.fWord}&sCurr=${saadetis.cUnit}">${page}</a></li>
 </c:forEach>
 </ul>

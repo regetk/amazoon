@@ -19,12 +19,23 @@
 
     function convertRes(data) {
         var multip = new Number(data);
+        //calculate new prices
         $(".prices").each(function(pr) {
             var price = new Number($(this).val());
             var cPrice = (price / 100.0) * multip;
             cPrice = cPrice.toFixed(2);
             $(this).parent().children("span").text(cPrice);
         });
+        //replace currency in page link
+        var toCurr = $("#selCurr option:selected").attr("value");
+        $(".pageLink").each(function(){
+            var hreff=$(this).attr("href");
+            var subs=hreff.substr(0,hreff.length-3);
+            subs=subs+toCurr;
+            $(this).attr("href",subs);
+            
+        });
+        
     }
 
 
