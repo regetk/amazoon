@@ -31,7 +31,10 @@ public class FindIs {
     private static String AWS_SECRET_KEY;
     private String fWord;
     private int fPage=1;
-    private int ePage=1;
+    private volatile int ePage=1; //it can change in the middle of for cycle
+    private int cPages=0;
+    
+    public int getPagesCount(){return (int) Math.ceil((this.cPages*10)/13.0);}
 
     public static void readConf() {
         String dPath = "C:\\Users\\Reget.Kalamees\\Documents\\NetBeansProjects\\Amazoon2\\konf.properties";
@@ -85,14 +88,8 @@ public class FindIs {
         params.put("AssociateTag", "proovitoo-20");
         params.put("ItemPage", String.valueOf(pageNr));
         params.put("ResponseGroup", "Small,OfferSummary");
-
         requestUrl = helper.sign(params);
-        //System.out.println("Signed Request is \"" + requestUrl + "\"");
-
-
         return requestUrl;
-
-
     }
 
    public FindIs(String findW,int startPage,int endPage) {
@@ -105,7 +102,7 @@ public class FindIs {
     }
    
    /**
-    * Joins found pages to one XML and unmarshals it to FoundItems collection 
+    * Joins found XML pages to one XML and unmarshals it to FoundItems collection 
     * @return FoundItems collection
     */
 
@@ -128,6 +125,17 @@ public class FindIs {
                 String rUrl = makeUrl(a, this.fWord);
                 System.out.println(rUrl);
                 Document doc = db.parse(rUrl);
+                //Find total pages section
+                if(this.cPages==0){
+                NodeList totalPages=doc.getElementsByTagName("TotalPages");
+                if(totalPages!=null) {
+                    Node nTotalPages=totalPages.item(0);
+                    String sTP=nTotalPages.getTextContent();
+                    if(sTP!=null) this.cPages=Integer.parseInt(sTP);
+                    //correct end page - not need to query non-avaiable pages
+                    if(this.ePage>this.cPages) this.ePage=this.cPages;
+                }
+                }
                 //Find Items section
                 NodeList items = doc.getElementsByTagName("Item");
                 if (items == null) {
@@ -157,6 +165,7 @@ public class FindIs {
             // Create the result stream for the transform
             StreamResult dStr = new StreamResult(stringWriter);
             transformer.transform(source, dStr);
+            //Create stream source for unmarshal
             StringReader str = new StringReader(stringWriter.toString());
             StreamSource ss = new StreamSource(str);
 

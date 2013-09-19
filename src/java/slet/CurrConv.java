@@ -22,7 +22,8 @@ import org.w3c.dom.NodeList;
 @WebServlet(name = "CurrConv", urlPatterns = {"/CurrConv"})
 public class CurrConv extends HttpServlet {
 
-  private static String url="http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?";  
+    private static String url = "http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?";
+
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -35,26 +36,24 @@ public class CurrConv extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-      try {
-          String toCurr=request.getParameter("toCurr");
-          String link=url+"FromCurrency=EUR&ToCurrency="+toCurr;
-          DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-          DocumentBuilder db = dbf.newDocumentBuilder();
-          Document doc=db.parse(link);
-          NodeList answers=doc.getElementsByTagName("double");
-          Node answer=answers.item(0);
-          String sAnsw=answer.getTextContent();
-          out.println(sAnsw);
-          
-      } catch (Exception ex) {
-          Logger.getLogger(CurrConv.class.getName()).log(Level.SEVERE, null, ex);
-          out.println("0");
-      }
-        
-     
-    }
+        try {
+            String toCurr = request.getParameter("toCurr");
+            String link = url + "FromCurrency=EUR&ToCurrency=" + toCurr;
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(link);
+            NodeList answers = doc.getElementsByTagName("double");
+            Node answer = answers.item(0);
+            String sAnsw = answer.getTextContent();
+            out.println(sAnsw);
 
-   
+        } catch (Exception ex) {
+            Logger.getLogger(CurrConv.class.getName()).log(Level.SEVERE, null, ex);
+            out.println("0");
+        }
+
+
+    }
 }

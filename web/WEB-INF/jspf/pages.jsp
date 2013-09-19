@@ -6,7 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<ul >
 <c:forEach var="page" begin="1" end="${cPages}" step="1">
-    Id: <c:out value="${page}"/>
+    <li style="display: inline;"><a href="?page=${page}&fWord=${saadetis.fWord}&sCurr=${saadetis.cUnit}">${page}</a></li>
 </c:forEach>
+</ul>

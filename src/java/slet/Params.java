@@ -1,7 +1,5 @@
 package slet;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author reget.kalamees
